@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 
-const validateBody = (req: Request, res: Response, next: NextFunction) => {
+const validateFieldTitle = (req: Request, res: Response, next: NextFunction) => {
   const { body } = req;
 
   if (body.title === undefined) {
@@ -15,5 +15,5 @@ const validateBody = (req: Request, res: Response, next: NextFunction) => {
 };
 
 export default {
-  validateBody,
+  validateFieldTitle,
 };
