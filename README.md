@@ -1,0 +1,8 @@
+db example.
+
+DB_USER=
+DB_HOST=
+DB_NAME=
+DB_PASS=
+DB_PORT=
+PORT=
