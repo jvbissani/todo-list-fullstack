@@ -23,7 +23,7 @@ const createTask = async (task: Task) => {
 
     const query = 'INSERT INTO tasks (title, status, created_at) VALUES ($1, $2, $3) RETURNING *';
 
-    const result = await client.query(query, [title, 'pendente', dateUTC]);
+    const result = await client.query(query, [title, 'pending', dateUTC]);
     return { insertId: result.rows[0].id };
   } finally {
     client.release();
