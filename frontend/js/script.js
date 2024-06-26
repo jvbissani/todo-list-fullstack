@@ -33,11 +33,18 @@ const deleteTask = async (id) => {
 
 const updateTask = async ({ id, title, status }) => {
 
-  await fetch(`http://localhost:3333/tasks/${id}`, {
+  if(status == 'done'){
+    deleteTask(id);
+  }
+
+  else{
+    await fetch(`http://localhost:3333/tasks/${id}`, {
     method: 'put',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ title, status }),
+  
   });
+}
 
   loadTasks();
   
@@ -87,10 +94,27 @@ const createRow = (task) => {
 
   const select = createSelect(status);
 
-  select.addEventListener('change', ({ target }) => updateTask({ ... task, status: target.value }));
+  select.addEventListener('change', ({ target }) => updateTask({ ...task, status: target.value }));
 
   const editButton = createElement('button', '', '<span class="material-symbols-outlined">edit</span>');
   const deleteButton = createElement('button', '', '<span class="material-symbols-outlined">delete</span>');
+
+  const editForm = createElement('form');
+  const editInput = createElement('input');
+
+  editInput.value = title;
+  editForm.appendChild(editInput);
+
+  editForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    
+    updateTask({ id, title: editInput.value, status: status });
+  });
+
+  editButton.addEventListener('click', () => {
+    tdTitle.innerText = '';
+    tdTitle.appendChild(editForm);
+  });
 
   editButton.classList.add('btn-action');
   deleteButton.classList.add('btn-action');
@@ -112,6 +136,8 @@ const createRow = (task) => {
 
 const loadTasks = async () => {
   const tasks = await fetchTasks();
+
+  tasks.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
 
   tbody.innerHTML = '';
 
